@@ -1,3 +1,4 @@
+import javax.xml.transform.Result;
 import java.sql.*;
 
 public class B1 {
@@ -8,13 +9,21 @@ public class B1 {
                 .getConnection("jdbc:mysql://localhost:3306/studentmanagement?serverTimezone=UTC", "root", "root");
         return conn;
     }
-    public void Display(int x){
+
+    public ResultSet getResultSet(PreparedStatement ps) {
+        try {
+
+
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public void Display(ResultSet rs){
         try{
-            Connection conn = getConnection();
-            Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT *from student");
             ResultSetMetaData rsm = rs.getMetaData();
-            // PreparedStatement ps = conn.prepareStatement("SELECT *from student inner join teacher on student.id = teacher.id");
             int col_num = rsm.getColumnCount();
             for (int i = 1; i <= col_num; i++)
                 System.out.print(rsm.getColumnLabel(i) + "       ");
@@ -36,14 +45,13 @@ public class B1 {
 
             ps.setFloat(1, x);
             ps.setFloat(2, y);
+            ResultSet rs = getResultSet(ps);
 
-            ResultSet rs = ps.executeQuery();
-            ResultSetMetaData rsm = rs.getMetaData();
-            // PreparedStatement ps = conn.prepareStatement("SELECT *from student inner join teacher on student.id = teacher.id");
-            int col_num = rsm.getColumnCount();
-            Display(col_num);
-        }
-        catch (Exception e) {
+
+
+            Display(rs);
+
+        } catch (Exception e) {
             System.out.println(e);
         }
 
@@ -56,13 +64,9 @@ public class B1 {
 
             ps.setFloat(1, x);
 
-            ResultSet rs = ps.executeQuery();
-            ResultSetMetaData rsm = rs.getMetaData();
-            // PreparedStatement ps = conn.prepareStatement("SELECT *from student inner join teacher on student.id = teacher.id");
-            int col_num = rsm.getColumnCount();
-            Display(col_num);
-            }
-         catch (Exception e) {
+            ResultSet rs = getResultSet(ps);
+            Display(rs);
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
