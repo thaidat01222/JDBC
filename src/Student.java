@@ -10,6 +10,9 @@ public class Student {
     private float Chem;
     private float Aver;
 
+    public Student() {
+    }
+
     public Student(int ID, String Name, float Math, float Phys, float Chem, float Aver) {
         this.ID = ID;
         this.Name = Name;
@@ -67,7 +70,7 @@ public class Student {
         return Aver;
     }
 
-    public void Display() {
+    public void display() {
         System.out.println("id :" + this.getID());
         System.out.println("name :" + this.getName());
         System.out.println("math :" + this.getMath());

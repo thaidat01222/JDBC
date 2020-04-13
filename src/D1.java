@@ -1,10 +1,9 @@
-import com.mysql.cj.result.SqlDateValueFactory;
-
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+
 public class D1 {
-    public static  List<Student> student;
+    public static List<Student> student;
+
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -16,8 +15,9 @@ public class D1 {
         ResultSet rs = ps.executeQuery();
         return rs;
     }
-    public static void Display(ResultSet rs){
-        try{
+
+    public static void Display(ResultSet rs) {
+        try {
             ResultSetMetaData rsm = rs.getMetaData();
             int col_num = rsm.getColumnCount();
             for (int i = 1; i <= col_num; i++)
@@ -32,6 +32,7 @@ public class D1 {
             System.out.println(e);
         }
     }
+
     private static Student mapResultSetToStudent(ResultSet rs) throws ClassNotFoundException, SQLException {
 
         int ID = rs.getInt(1);
@@ -42,9 +43,10 @@ public class D1 {
         float Aver = rs.getFloat(6);
         return new Student(ID, Name, Math, Phys, Chem, Aver);
     }
-    public static void updateMultipleStudent(List<Student> student) throws ClassNotFoundException , SQLException{
+
+    public static void updateMultipleStudent(List<Student> student) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
-        String query =  "";
+        String query = "";
         query += "UPDATE student SET ";
         query += " name = ? ,";
         query += " math = ? ,";
@@ -54,7 +56,7 @@ public class D1 {
         query += "where id = ?";
 
         PreparedStatement ps = conn.prepareStatement(query);
-        for (Student student1 : student ) {
+        for (Student student1 : student) {
             ps.setString(1, student1.getName());
             ps.setFloat(2, student1.getMath());
             ps.setFloat(3, student1.getPhys());
@@ -65,10 +67,11 @@ public class D1 {
         }
 
     }
-    private static void addMultipleStudents(List<Student> student) throws  ClassNotFoundException , SQLException {
+
+    private static void addMultipleStudents(List<Student> student) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO student VALUES (?,?,?,?,?,?)");
-        for(Student student1 : student ) {
+        for (Student student1 : student) {
             ps.setInt(1, student1.getID());
             ps.setString(2, student1.getName());
             ps.setFloat(3, student1.getMath());
@@ -78,25 +81,26 @@ public class D1 {
             ps.executeUpdate();
         }
     }
-    private static void deleteMultipleStudents(List<Integer> studentID) throws ClassNotFoundException , SQLException {
+
+    private static void deleteMultipleStudents(List<Integer> studentID) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("Delete table student where id = ?");
-        for( Student student1 : student) {
+        for (Student student1 : student) {
             ps.setInt(1, student1.getID());
             ps.executeUpdate();
         }
     }
-    private static void displayStudents(List<Student> studentID) throws  ClassNotFoundException, SQLException{
+
+    private static void displayStudents(List<Student> studentID) throws ClassNotFoundException, SQLException {
         Connection conn = getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT *FROM student WHERE id = ?");
-        for( Student student1 : student) {
+        for (Student student1 : student) {
             ps.setInt(1, student1.getID());
             ps.executeUpdate();
         }
         ResultSet rs = ps.executeQuery();
         Display(rs);
     }
-
 
 
 }
